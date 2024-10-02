@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  - workflow_dispatch
+  - push
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v1.5.1
+        with:
+          deno-version: v2.0.0-rc.9
+
+      - name: Run Tests
+        run: deno test
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v1.5.1
+        with:
+          deno-version: v2.0.0-rc.9
+
+      - name: Lint
+        run: deno lint
