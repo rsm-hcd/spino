@@ -8,23 +8,29 @@ process of Deno projects.
 
 Spino is a command-line tool that can be installed globally using Deno.
 
-  ```sh
-  deno install -g --allow-read --allow-write --allow-run="deno" --unstable -n spino jsr:@rsm-hcd/spino
-  ```
+```sh
+deno install -g --allow-read --allow-run="deno" -n spino jsr:@rsm-hcd/spino
+```
 
-Once installed, you can run the `spino` command from the terminal to start the build process.
+Once installed, you can run the `spino` command from the terminal to run any
+tasks or scripts that match the provided name.
 
-  ```sh
-  spino dev
-  ```
+```sh
+# Run all dev tasks
+spino dev
 
-Or, you can run, without installing globally, by adding to the tasks section of your `deno.json` file.
+# Run all dev and test tasks
+spino dev test
+```
 
-  ```json
-  {
-    "tasks": {
-      "spino": "deno --allow-run='deno' jsr:@rsm-hcd/spino",
-      "test": "deno run spino test"
-    }
+Or, you can run, without installing globally, by adding to the tasks section of
+your `deno.json` file.
+
+```json
+{
+  "tasks": {
+    "spino": "deno --allow-read --allow-run='deno' jsr:@rsm-hcd/spino",
+    "test": "deno run spino test"
   }
-  ```
+}
+```
