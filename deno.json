@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "spino": "deno -A ./cli/main.ts"
+  },
+  "workspace": [
+    "./cli"
+  ]
+}
