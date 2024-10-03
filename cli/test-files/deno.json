@@ -1,0 +1,7 @@
+{
+  "name": "@rsm-hcd/deno-stub",
+  "tasks": {
+    "dev": "deno eval \"console.log('dev called in deno-stub')\"",
+    "dev2": "deno eval \"console.log('dev2 called in deno-stub')\""
+  }
+}

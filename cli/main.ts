@@ -7,7 +7,9 @@ const rootCwd = Deno.cwd();
 const decoder = new TextDecoder("utf-8");
 
 Deno.args.forEach((arg) => {
-  const foundTasks = findAllTasks(rootCwd).filter(({ task }) => task === arg);
+  const foundTasks = findAllTasks({ cwd: rootCwd }).filter(({ task }) =>
+    task === arg
+  );
 
   if (foundTasks.length === 0) {
     console.log(`Task "${arg}" not found.`);

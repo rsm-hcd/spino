@@ -17,7 +17,7 @@ jobs:
           deno-version: v2.0.0-rc.9
 
       - name: Run Tests
-        run: deno test
+        run: deno run test:ci
 
   lint:
     name: Lint
