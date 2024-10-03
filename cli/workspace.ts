@@ -1,26 +1,42 @@
+import * as path from "@std/path";
 import type { Task } from "./types.ts";
+import { parse } from "./package-parser.ts";
 
-/**
- * Find and read all packages (npm and deno) in monorepo.
- */
-export function findAllTasks(cwd: string): Task[] {
-  return findNestedTasks(cwd, cwd);
+interface FindAllTasksOptions {
+  /**
+   * Current working directory.
+   */
+  cwd: string;
+
+  /**
+   * (Optional) Root directory of the monorepo.
+   * Defaults to cwd if not set.
+   */
+  rootCwd?: string;
+
+  /**
+   * (Optional) Ignore these folders
+   * Defaults to ["node_modules", ".git"] if not set.
+   */
+  ignore?: string[];
 }
 
 /**
  * Find and read all packages (npm and deno) in monorepo.
  */
-function findNestedTasks(cwd: string, rootCwd: string): Task[] {
+export function findAllTasks(options: FindAllTasksOptions): Task[] {
   const tasks: Task[] = [];
+  const { cwd, rootCwd = cwd, ignore = ["node_modules", ".git"] } = options;
 
   for (const entry of Deno.readDirSync(cwd)) {
+    const entryPath = path.join(cwd, entry.name);
+
     if (entry.isDirectory) {
-      // ignore node_modules
-      if (entry.name === "node_modules") {
+      if (ignore.includes(entry.name)) {
         continue;
       }
 
-      tasks.push(...findNestedTasks(`${cwd}/${entry.name}`, rootCwd));
+      tasks.push(...findAllTasks({ cwd: entryPath, rootCwd }));
       continue;
     }
 
@@ -28,57 +44,13 @@ function findNestedTasks(cwd: string, rootCwd: string): Task[] {
       continue;
     }
 
-    const relativeFolderName = cwd.slice(rootCwd.length + 1);
-
-    try {
-      if (entry.isFile && entry.name === "package.json") {
-        tasks.push(...parsePackageJson(`${cwd}/${entry.name}`, relativeFolderName));
-        continue;
-      }
-
-      if (entry.isFile && entry.name === "deno.json") {
-        tasks.push(...parseDenoJson(`${cwd}/${entry.name}`, relativeFolderName));
-      }
-    } catch (error) {
-      if (error instanceof Deno.errors.NotFound) {
-        continue;
-      }
-
-      throw error;
+    if (entry.isFile) {
+      const relativeFolderName = cwd.slice(rootCwd.length + 1);
+      tasks.push(
+        ...parse(entryPath, relativeFolderName, cwd),
+      );
     }
   }
 
-  return tasks;
-}
-
-function parsePackageJson(filePath: string, relativeFolderName: string): Task[] {
-  const tasks: Task[] = [];
-  const pkg = JSON.parse(Deno.readTextFileSync(filePath));
-  if (pkg.scripts) {
-    for (const name in pkg.scripts) {
-      tasks.push({
-        package: pkg.name ?? relativeFolderName,
-        task: name,
-        script: pkg.scripts[name],
-        cwd: filePath.slice(0, filePath.lastIndexOf('/')),
-      });
-    }
-  }
-  return tasks;
-}
-
-function parseDenoJson(filePath: string, relativeFolderName: string): Task[] {
-  const tasks: Task[] = [];
-  const { tasks: denoTasks, name: denoPackageName } = JSON.parse(Deno.readTextFileSync(filePath));
-  if (denoTasks) {
-    for (const name in denoTasks) {
-      tasks.push({
-        package: denoPackageName ?? relativeFolderName,
-        task: name,
-        script: denoTasks[name],
-        cwd: filePath.slice(0, filePath.lastIndexOf('/')),
-      });
-    }
-  }
   return tasks;
 }
