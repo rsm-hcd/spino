@@ -1,12 +1,10 @@
-import * as colors from "@std/fmt/colors";
 import { mergeReadableStreams } from "@std/streams/merge-readable-streams";
 import { findAllTasks } from "./workspace.ts";
-import { randomColor } from "./colors.ts";
+import { PrefixLogger } from "./prefix-logger.ts";
 
 const rootCwd = Deno.cwd();
-const decoder = new TextDecoder("utf-8");
 
-Deno.args.forEach((arg) => {
+for (const arg of Deno.args) {
   const foundTasks = findAllTasks({ cwd: rootCwd }).filter(({ task }) =>
     task === arg
   );
@@ -17,8 +15,9 @@ Deno.args.forEach((arg) => {
   }
 
   // Run all tasks in parallel
-  foundTasks.forEach(
+  const runningTasks = foundTasks.map(
     async ({ package: taskPackageName, task, cwd }) => {
+      const logger = new PrefixLogger(taskPackageName);
       const command = new Deno.Command("deno", {
         cwd,
         args: ["run", task],
@@ -28,40 +27,18 @@ Deno.args.forEach((arg) => {
 
       const { status, stdout, stderr } = command.spawn();
 
-      const consoleColor = colors[randomColor()] as (str: string) => string;
-      const prefix = consoleColor(
-        `${taskPackageName}:`,
-      );
-
       await mergeReadableStreams(stdout, stderr)
         .pipeTo(
           new WritableStream<Uint8Array>(
             {
               write(chunk) {
                 return new Promise((resolve) => {
-                  const decoded = typeof chunk === "string"
-                    ? chunk
-                    : decoder.decode(chunk, { stream: true });
-
-                  for (const line of decoded.split("\n")) {
-                    if (!line) {
-                      continue;
-                    }
-
-                    console.log(`${prefix} ${line}`);
-                  }
-
+                  logger.log(chunk);
                   resolve();
                 });
               },
               abort(err) {
-                for (const line of `${err}`.split("\n")) {
-                  if (!line) {
-                    continue;
-                  }
-
-                  console.error(`${prefix} ${line}`);
-                }
+                logger.error(`${err}`);
               },
             },
           ),
@@ -70,9 +47,11 @@ Deno.args.forEach((arg) => {
       const { success } = await status;
 
       if (!success) {
-        console.error(`${prefix} Failed to run task "${task}".`);
+        logger.error(`Failed to run task "${task}".`);
         Deno.exit(1);
       }
     },
   );
-});
+
+  await Promise.all(runningTasks);
+}
