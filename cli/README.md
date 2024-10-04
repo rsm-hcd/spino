@@ -4,6 +4,16 @@ Spino is a build orchestration tool specifically for use within Deno Workspaces.
 It is designed to be a simple, fast, and reliable tool for managing the build
 process of Deno projects.
 
+## Pre-requisites
+
+Spino requires Deno 2+ to be installed on your system: <https://deno.com/>
+
+Until the official release of Deno 2, run:
+
+```sh
+deno upgrade rc
+```
+
 ## Usage
 
 Spino is a command-line tool that can be installed globally using Deno.

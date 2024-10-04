@@ -20,7 +20,7 @@ jobs:
 
       - uses: denoland/setup-deno@v1.5.1
         with:
-          deno-version: v2.0.0-rc.9
+          deno-version: v2.0.0-rc.10
 
       - name: Publish package
         run: deno publish
