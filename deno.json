@@ -1,8 +1,8 @@
 {
   "tasks": {
     "spino": "deno -A ./cli/main.ts",
-    "test": "deno run spino test",
-    "test:ci": "deno run spino test:ci"
+    "test": "deno task spino test",
+    "test:ci": "deno task spino test:ci"
   },
   "workspace": [
     "./cli"
