@@ -30,7 +30,7 @@ your `deno.json` file.
 {
   "tasks": {
     "spino": "deno --allow-read --allow-run='deno' jsr:@rsm-hcd/spino",
-    "test": "deno run spino test"
+    "test": "deno task spino test"
   }
 }
 ```

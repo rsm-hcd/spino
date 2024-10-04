@@ -3,11 +3,12 @@
   "version": "0.1.4",
   "exports": "./main.ts",
   "tasks": {
-    "test": "deno run test:ci --watch",
+    "test": "deno task test:ci --watch",
     "test:ci": "deno test --allow-read"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@^1",
+    "@std/cli": "jsr:@std/cli@^1",
     "@std/fmt": "jsr:@std/fmt@^1",
     "@std/path": "jsr:@std/path@^1",
     "@std/streams": "jsr:@std/streams@^1",
