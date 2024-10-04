@@ -7,7 +7,13 @@ describe("cli/workspace", () => {
   let cwd: string;
 
   before(() => {
-    cwd = path.join(Deno.cwd(), "test-files");
+    const { dirname } = import.meta;
+
+    if (dirname === undefined) {
+      throw new Error("import.meta.dirname is undefined");
+    }
+
+    cwd = path.join(dirname, "test-files");
   });
 
   it("should find all tasks in a workspace", () => {

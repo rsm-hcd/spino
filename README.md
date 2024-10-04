@@ -16,11 +16,15 @@ Once installed, you can run the `spino` command from the terminal to run any
 tasks or scripts that match the provided name.
 
 ```sh
-# Run all dev tasks
-spino dev
+# Run a specific task
+> spino dev
 
 # Run all dev and test tasks
-spino dev test
+> spino dev test
+
+# See help information
+> spino --help
+Usage: spino [task1] [task2] ...
 ```
 
 Or, you can run, without installing globally, by adding to the tasks section of
@@ -30,7 +34,7 @@ your `deno.json` file.
 {
   "tasks": {
     "spino": "deno --allow-read --allow-run='deno' jsr:@rsm-hcd/spino",
-    "test": "deno run spino test"
+    "test": "deno task spino test"
   }
 }
 ```
