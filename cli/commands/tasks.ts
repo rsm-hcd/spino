@@ -2,7 +2,7 @@ import { mergeReadableStreams } from "@std/streams/merge-readable-streams";
 import { findAllTasks } from "../workspace.ts";
 import { PrefixLogger } from "../prefix-logger.ts";
 
-export async function runTasks(rootCwd: string, tasks: string[]) {
+export async function runTasksCommand(rootCwd: string, tasks: string[]) {
   const allRunningTasks = tasks.flatMap((taskName) => {
     const foundTasks = findAllTasks({ cwd: rootCwd }).filter((p) =>
       p.task === taskName
