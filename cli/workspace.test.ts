@@ -16,8 +16,8 @@ describe("cli/workspace", () => {
     cwd = path.join(dirname, "test-files");
   });
 
-  it("should find all tasks in a workspace", () => {
-    const tasks = findAllTasks({ cwd });
+  it("should find all tasks in a workspace", async () => {
+    const tasks = await findAllTasks({ cwd });
     assertEquals(tasks.length, 4);
   });
 });

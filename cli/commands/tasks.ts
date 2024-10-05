@@ -3,11 +3,10 @@ import { findAllTasks } from "../workspace.ts";
 import { PrefixLogger } from "../prefix-logger.ts";
 
 export async function runTasksCommand(rootCwd: string, tasks: string[]) {
-  const allRunningTasks = tasks.flatMap((taskName) => {
-    const foundTasks = findAllTasks({ cwd: rootCwd }).filter((p) =>
-      p.task === taskName
-    );
+  const allTasks = await findAllTasks({ cwd: rootCwd });
 
+  const allRunningTasks = tasks.flatMap((taskName) => {
+    const foundTasks = allTasks.filter((p) => p.task === taskName);
     if (foundTasks.length === 0) {
       console.log(`Task "${taskName}" not found.`);
       Deno.exit(1);

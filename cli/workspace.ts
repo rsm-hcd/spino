@@ -1,4 +1,5 @@
-import * as path from "@std/path";
+import { dirname, join, relative } from "@std/path";
+import { walk } from "@std/fs/walk";
 import type { Task } from "./types.ts";
 import { parse } from "./package-parser.ts";
 
@@ -13,41 +14,35 @@ interface FindAllTasksOptions {
    * Defaults to cwd if not set.
    */
   rootCwd?: string;
-
-  /**
-   * (Optional) Ignore these folders
-   * Defaults to ["node_modules", ".git"] if not set.
-   */
-  ignore?: string[];
 }
 
 /**
  * Find and read all packages (npm and deno) in monorepo.
  */
-export function findAllTasks(options: FindAllTasksOptions): Task[] {
+export async function findAllTasks(
+  options: FindAllTasksOptions,
+): Promise<Task[]> {
   const tasks: Task[] = [];
-  const { cwd, rootCwd = cwd, ignore = ["node_modules", ".git"] } = options;
+  const { cwd, rootCwd = cwd } = options;
 
-  for (const entry of Deno.readDirSync(cwd)) {
-    const entryPath = path.join(cwd, entry.name);
+  for await (const dirEntry of walk(rootCwd, { exts: ["json"] })) {
+    if (dirEntry.isFile) {
+      const relativeFolderName = relative(
+        rootCwd,
+        dirname(dirEntry.path),
+      );
 
-    if (entry.isDirectory) {
-      if (ignore.includes(entry.name)) {
+      // Skip root folder
+      if (!relativeFolderName) {
         continue;
       }
 
-      tasks.push(...findAllTasks({ cwd: entryPath, rootCwd }));
-      continue;
-    }
-
-    if (cwd === rootCwd) {
-      continue;
-    }
-
-    if (entry.isFile) {
-      const relativeFolderName = cwd.slice(rootCwd.length + 1);
       tasks.push(
-        ...parse(entryPath, relativeFolderName, cwd),
+        ...parse(
+          dirEntry.path,
+          relativeFolderName,
+          join(rootCwd, relativeFolderName),
+        ),
       );
     }
   }

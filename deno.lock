@@ -5,9 +5,11 @@
     "jsr:@std/assert@^1.0.6": "1.0.6",
     "jsr:@std/cli@1": "1.0.6",
     "jsr:@std/fmt@1": "1.0.2",
+    "jsr:@std/fs@1": "1.0.4",
     "jsr:@std/internal@^1.0.4": "1.0.4",
     "jsr:@std/path@*": "1.0.6",
     "jsr:@std/path@1": "1.0.6",
+    "jsr:@std/path@^1.0.6": "1.0.6",
     "jsr:@std/streams@1": "1.0.6",
     "jsr:@std/testing@1": "1.0.3"
   },
@@ -23,6 +25,12 @@
     },
     "@std/fmt@1.0.2": {
       "integrity": "87e9dfcdd3ca7c066e0c3c657c1f987c82888eb8103a3a3baa62684ffeb0f7a7"
+    },
+    "@std/fs@1.0.4": {
+      "integrity": "2907d32d8d1d9e540588fd5fe0ec21ee638134bd51df327ad4e443aaef07123c",
+      "dependencies": [
+        "jsr:@std/path@^1.0.6"
+      ]
     },
     "@std/internal@1.0.4": {
       "integrity": "62e8e4911527e5e4f307741a795c0b0a9e6958d0b3790716ae71ce085f755422"
@@ -48,6 +56,7 @@
           "jsr:@std/assert@1",
           "jsr:@std/cli@1",
           "jsr:@std/fmt@1",
+          "jsr:@std/fs@1",
           "jsr:@std/path@1",
           "jsr:@std/streams@1",
           "jsr:@std/testing@1"
