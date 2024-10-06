@@ -32,8 +32,11 @@ tasks or scripts that match the provided name.
 # Run all dev and test tasks
 > spino dev test
 
+# Upgrade spino
+> spino upgrade
+
 # See help information
-> spino --help
+> spino [command] --help
 Usage: spino [task1] [task2] ...
 ```
 
