@@ -1,6 +1,6 @@
 {
   "name": "@rsm-hcd/spino",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "exports": "./main.ts",
   "tasks": {
     "test": "deno task test:ci --watch",

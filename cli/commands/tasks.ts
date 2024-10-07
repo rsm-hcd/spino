@@ -15,7 +15,7 @@ export async function runTasksCommand(rootCwd: string, tasks: string[]) {
     // Run all tasks in parallel
     const runningTasks = foundTasks.map(
       async ({ package: taskPackageName, task, cwd }) => {
-        const logger = new PrefixLogger(taskPackageName);
+        const logger = new PrefixLogger(taskPackageName, task);
         const command = new Deno.Command("deno", {
           cwd,
           args: ["task", task],

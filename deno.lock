@@ -14,6 +14,16 @@
     "jsr:@std/testing@1": "1.0.3"
   },
   "jsr": {
+    "@rsm-hcd/spino@0.2.0": {
+      "integrity": "4705c29a6b826a531bc90f225ff36f3f098656b9b1fb310c86de48f3e46dc1b1",
+      "dependencies": [
+        "jsr:@std/cli",
+        "jsr:@std/fmt",
+        "jsr:@std/fs",
+        "jsr:@std/path@1",
+        "jsr:@std/streams"
+      ]
+    },
     "@std/assert@1.0.6": {
       "integrity": "1904c05806a25d94fe791d6d883b685c9e2dcd60e4f9fc30f4fc5cf010c72207",
       "dependencies": [

@@ -12,8 +12,9 @@ describe("cli/prefix-logger", () => {
   it("should log messages with a prefix", () => {
     // Arrange
     const prefix = "test";
+    const task = "task";
     const message = "Hello, world!";
-    const logger = new PrefixLogger(prefix);
+    const logger = new PrefixLogger(prefix, task);
 
     // Act
     logger.log("Hello, world!");
