@@ -25,11 +25,16 @@ export async function findAllTasks(
   const tasks: Task[] = [];
   const { cwd, rootCwd = cwd } = options;
 
-  for await (const dirEntry of walk(rootCwd, { exts: ["json"] })) {
-    if (dirEntry.isFile) {
+  const jsonEntries = walk(rootCwd, {
+    exts: ["json"],
+    skip: [/node_modules/, /dist/],
+  });
+
+  for await (const entry of jsonEntries) {
+    if (entry.isFile) {
       const relativeFolderName = relative(
         rootCwd,
-        dirname(dirEntry.path),
+        dirname(entry.path),
       );
 
       // Skip root folder
@@ -39,7 +44,7 @@ export async function findAllTasks(
 
       tasks.push(
         ...parse(
-          dirEntry.path,
+          entry.path,
           relativeFolderName,
           join(rootCwd, relativeFolderName),
         ),
