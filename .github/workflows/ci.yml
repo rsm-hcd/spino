@@ -4,6 +4,9 @@ on:
   - workflow_dispatch
   - push
 
+env:
+  DENO_DIR: deno_cache_dir
+
 jobs:
   test:
     name: Test
@@ -12,9 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: denoland/setup-deno@v1.5.1
+      - uses: denoland/setup-deno@v2.0.0
         with:
-          deno-version: v2.0.0-rc.10
+          deno-version: v2.x
+
+      - name: Cache Deno dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: ${{ hashFiles('deno.lock') }}
 
       - name: Run Tests
         run: deno task test:ci
@@ -26,9 +35,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: denoland/setup-deno@v1.5.1
+      - uses: denoland/setup-deno@v2.0.0
         with:
-          deno-version: v2.0.0-rc.10
+          deno-version: v2.x
+
+      - name: Cache Deno dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: ${{ hashFiles('deno.lock') }}
 
       - name: Lint
         run: deno lint
