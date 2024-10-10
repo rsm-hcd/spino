@@ -8,10 +8,11 @@ on:
     types: [completed]
 
 env:
-  DENO_DIR: deno_cache_dir
+  DENO_DIR: ../deno_cache_dir
 
 jobs:
   publish:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     permissions:
