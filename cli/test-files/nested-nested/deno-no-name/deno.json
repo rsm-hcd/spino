@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "dev": "deno eval \"console.log('dev called in stub-deno-nested')\"",
+    "dev2": "deno eval \"console.log('dev2 called in stub-deno-nested')\""
+  }
+}

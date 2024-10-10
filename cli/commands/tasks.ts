@@ -1,12 +1,12 @@
 import { mergeReadableStreams } from "@std/streams/merge-readable-streams";
-import { findAllTasks } from "../workspace.ts";
+import { findAllWorkspaceTasks } from "../workspace.ts";
 import { PrefixLogger } from "../prefix-logger.ts";
 
 export async function runTasksCommand(rootCwd: string, tasks: string[]) {
-  const allTasks = await findAllTasks({ cwd: rootCwd });
+  const allWorkspaceTasks = await findAllWorkspaceTasks({ cwd: rootCwd });
 
   const allRunningTasks = tasks.flatMap((taskName) => {
-    const foundTasks = allTasks.filter((p) => p.task === taskName);
+    const foundTasks = allWorkspaceTasks.filter((p) => p.task === taskName);
     if (foundTasks.length === 0) {
       console.log(`Task "${taskName}" not found.`);
       Deno.exit(1);
@@ -43,7 +43,6 @@ export async function runTasksCommand(rootCwd: string, tasks: string[]) {
           );
 
         const { success } = await status;
-
         if (!success) {
           logger.error(`Failed to run task "${task}".`);
           Deno.exit(1);

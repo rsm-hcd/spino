@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { before, describe, it } from "@std/testing/bdd";
 import * as path from "@std/path";
-import { findAllTasks } from "./workspace.ts";
+import { findAllWorkspaceTasks } from "./workspace.ts";
 
 describe("cli/workspace", () => {
   let cwd: string;
@@ -17,7 +17,17 @@ describe("cli/workspace", () => {
   });
 
   it("should find all tasks in a workspace", async () => {
-    const tasks = await findAllTasks({ cwd });
-    assertEquals(tasks.length, 4);
+    const tasks = await findAllWorkspaceTasks({ cwd });
+    assertEquals(tasks.length, 6);
+  });
+
+  describe("when package does not have a name", () => {
+    it("should use the folder name as the package name", async () => {
+      const tasks = await findAllWorkspaceTasks({ cwd });
+      assertEquals(
+        tasks.filter((task) => task.package.includes("\\")).length,
+        0,
+      );
+    });
   });
 });
