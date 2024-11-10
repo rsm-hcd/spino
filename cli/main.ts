@@ -2,12 +2,22 @@ import { parseCommands } from "./command-parser.ts";
 import { displayHelpCommand } from "./commands/help.ts";
 import { runTasksCommand } from "./commands/tasks.ts";
 import { upgradeCommand } from "./commands/upgrade.ts";
+import { listCommand } from "./commands/list.ts";
 
 const rootCwd = Deno.cwd();
 const { help, command, tasks } = parseCommands(Deno.args);
 
-if (!help && command === "upgrade") {
-  upgradeCommand(import.meta.url);
+if (!help) {
+  switch (command) {
+    case "upgrade": {
+      upgradeCommand(import.meta.url);
+      break;
+    }
+    case "list": {
+      await listCommand(rootCwd);
+      break;
+    }
+  }
   Deno.exit(0);
 }
 
