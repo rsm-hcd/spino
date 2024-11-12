@@ -16,7 +16,7 @@ export async function runTasksCommand(rootCwd: string, tasks: string[]) {
     const runningTasks = foundTasks.map(
       async ({ package: taskPackageName, task, cwd }) => {
         const logger = new PrefixLogger(taskPackageName, task);
-        const command = new Deno.Command("deno", {
+        const command = new Deno.Command(Deno.execPath(), {
           cwd,
           args: ["task", task],
           stdout: "piped",

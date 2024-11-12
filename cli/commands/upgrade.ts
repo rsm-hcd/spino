@@ -14,8 +14,8 @@ export async function upgradeCommand() {
       "-gfR",
       "--no-check",
       "--quiet",
-      "--allow-net=jsr.io:443",
-      '--allow-run="deno"',
+      "--allow-net",
+      "--allow-run",
       `${packageName}@${meta.latest}`,
     ],
   }).spawn();
