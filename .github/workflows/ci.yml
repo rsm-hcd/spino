@@ -4,9 +4,6 @@ on:
   - workflow_dispatch
   - push
 
-env:
-  DENO_DIR: ~/deno_cache_dir
-
 jobs:
   test:
     name: Test
@@ -14,6 +11,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set Deno cache dir
+        shell: bash
+        run: echo "DENO_DIR=$RUNNER_TEMP${{ runner.os == 'Windows' && '\\' || '/'  }}deno_cache" >> $GITHUB_ENV
 
       - uses: denoland/setup-deno@v2
         with:
