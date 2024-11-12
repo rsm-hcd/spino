@@ -1,8 +1,23 @@
-export function upgradeCommand(source: string) {
+interface Meta {
+  latest: string;
+  versions: Record<string, unknown>;
+}
+
+export async function upgradeCommand() {
+  const packageName = "@rsm-hcd/spino";
+  const fetchResult = await fetch(`https://jsr.io/${packageName}/meta.json`);
+  const meta: Meta = await fetchResult.json();
+
   const command = new Deno.Command("deno", {
-    args: ["install", "-gRf", "--allow-run", '--allow-run="deno"', source],
+    args: [
+      "install",
+      "-gfR",
+      "--allow-run",
+      '--allow-run="deno"',
+      `${packageName}@${meta.latest}`,
+    ],
   });
 
   command.outputSync();
-  console.log("✅ Updated spino to latest version");
+  console.log(`✅ Spino is updated to version ${meta.latest}`);
 }
