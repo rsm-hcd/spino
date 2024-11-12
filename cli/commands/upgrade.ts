@@ -1,8 +1,27 @@
-export function upgradeCommand(source: string) {
-  const command = new Deno.Command("deno", {
-    args: ["cache", "--reload", source],
-  });
+interface Meta {
+  latest: string;
+  versions: Record<string, unknown>;
+}
 
-  command.outputSync();
-  console.log("Update spino to latest version");
+export async function upgradeCommand() {
+  const packageName = "@rsm-hcd/spino";
+  const fetchResult = await fetch(`https://jsr.io/${packageName}/meta.json`);
+  const meta: Meta = await fetchResult.json();
+
+  const process = new Deno.Command(Deno.execPath(), {
+    args: [
+      "install",
+      "-gfR",
+      "--no-check",
+      "--quiet",
+      "--allow-read",
+      "--allow-net",
+      "--allow-run",
+      `jsr:${packageName}@${meta.latest}`,
+    ],
+  }).spawn();
+
+  await process.status;
+
+  console.log(`✅ Spino is updated to latest version: ${meta.latest}`);
 }

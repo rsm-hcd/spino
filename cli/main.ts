@@ -10,7 +10,7 @@ const { help, command, tasks } = parseCommands(Deno.args);
 if (!help) {
   switch (command) {
     case "upgrade": {
-      upgradeCommand(import.meta.url);
+      await upgradeCommand();
       break;
     }
     case "list": {

@@ -13,7 +13,7 @@ Spino requires Deno 2+ to be installed on your system: <https://deno.com/>
 Spino is a command-line tool that can be installed globally using Deno.
 
 ```sh
-deno install -g --allow-read --allow-run="deno" -n spino jsr:@rsm-hcd/spino
+deno install -g --allow-read --allow-run="deno" jsr:@rsm-hcd/spino
 ```
 
 Once installed, you can run the `spino` command from the terminal to run any
