@@ -8,17 +8,19 @@ export async function upgradeCommand() {
   const fetchResult = await fetch(`https://jsr.io/${packageName}/meta.json`);
   const meta: Meta = await fetchResult.json();
 
-  const command = new Deno.Command("deno", {
+  const process = new Deno.Command(Deno.execPath(), {
     args: [
       "install",
       "-gfR",
-      "--allow-run",
-      "--allow-net=jsr.io",
+      "--no-check",
+      "--quiet",
+      "--allow-net=jsr.io:443",
       '--allow-run="deno"',
       `${packageName}@${meta.latest}`,
     ],
-  });
+  }).spawn();
 
-  command.outputSync();
-  console.log(`✅ Spino is updated to version ${meta.latest}`);
+  await process.status;
+
+  console.log(`✅ Spino is updated to latest version: ${meta.latest}`);
 }

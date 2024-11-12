@@ -7,7 +7,7 @@ const rootCwd = Deno.cwd();
 const { help, command, tasks } = parseCommands(Deno.args);
 
 if (!help && command === "upgrade") {
-  upgradeCommand();
+  await upgradeCommand();
   Deno.exit(0);
 }
 
