@@ -22,7 +22,7 @@ jobs:
       - name: Cache Deno dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ env.DENO_DIR }}
+          path: ~/deno_cache_dir
           key: ${{ hashFiles('deno.lock') }}
 
       - name: Run Tests
@@ -42,7 +42,7 @@ jobs:
       - name: Cache Deno dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ env.DENO_DIR }}
+          path: ~/deno_cache_dir
           key: ${{ hashFiles('deno.lock') }}
 
       - name: Lint
