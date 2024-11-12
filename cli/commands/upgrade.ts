@@ -14,9 +14,10 @@ export async function upgradeCommand() {
       "-gfR",
       "--no-check",
       "--quiet",
+      "--allow-read",
       "--allow-net",
       "--allow-run",
-      `${packageName}@${meta.latest}`,
+      `jsr:${packageName}@${meta.latest}`,
     ],
   }).spawn();
 
