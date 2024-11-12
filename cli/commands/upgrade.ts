@@ -13,6 +13,7 @@ export async function upgradeCommand() {
       "install",
       "-gfR",
       "--allow-run",
+      "--allow-net=jsr.io",
       '--allow-run="deno"',
       `${packageName}@${meta.latest}`,
     ],
