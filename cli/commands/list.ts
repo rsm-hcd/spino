@@ -21,12 +21,8 @@ export async function listCommand(rootCwd: string) {
   }, {} as Record<string, Task[]>);
 
   // Calculate the max length of all task names
-  const taskNames: string[] = [];
-  Object.entries(groupedTasks).forEach(([_, workspaceTasks]) => {
-    workspaceTasks.forEach((task) => {
-      taskNames.push(task.task);
-    });
-  });
+  const taskNames: string[] = Object.values(groupedTasks)
+    .flatMap((workspaceTasks) => workspaceTasks.map((task) => task.task));
   const maxTaskNameLength = Math.max(...taskNames.map((name) => name.length));
 
   // Log each task with left-aligned script
