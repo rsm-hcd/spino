@@ -18,7 +18,6 @@ if (!help) {
       break;
     }
   }
-  Deno.exit(0);
 }
 
 if (help || (command == null && tasks.length === 0)) {
