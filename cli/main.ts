@@ -13,18 +13,18 @@ export async function main(deps: MainCliDependencies, args: string[]) {
     switch (command) {
       case "upgrade": {
         await deps.upgradeCommand();
-        break;
+        return;
       }
       case "list": {
         await deps.listCommand(rootCwd);
-        break;
+        return;
       }
     }
   }
 
   if (help || (command == null && tasks.length === 0)) {
     deps.displayHelpCommand(command);
-    Deno.exit(0);
+    return;
   }
 
   await deps.runTasksCommand(rootCwd, tasks);

@@ -9,7 +9,7 @@ export async function runTasksCommand(rootCwd: string, tasks: string[]) {
     const foundTasks = allWorkspaceTasks.filter((p) => p.task === taskName);
     if (foundTasks.length === 0) {
       console.log(`Task "${taskName}" not found.`);
-      Deno.exit(1);
+      return;
     }
 
     // Run all tasks in parallel
