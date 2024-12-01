@@ -1,21 +1,15 @@
 import { assertRejects } from "@std/assert/rejects";
 import { assertSpyCall, spy } from "@std/testing/mock";
-
 import { parseCommands } from "./command-parser.ts";
-import { displayHelpCommand } from "./commands/help.ts";
-import { listCommand } from "./commands/list.ts";
-import { runTasksCommand } from "./commands/tasks.ts";
-import { upgradeCommand } from "./commands/upgrade.ts";
-
 import { main } from "./main.ts";
 import type { MainCliSpyDependencies } from "./types.ts";
 
 const createMockDeps = (): MainCliSpyDependencies => ({
   parseCommands: spy(parseCommands),
-  displayHelpCommand: spy(displayHelpCommand),
-  runTasksCommand: spy(runTasksCommand),
-  upgradeCommand: spy(upgradeCommand),
-  listCommand: spy(listCommand),
+  displayHelpCommand: spy(),
+  runTasksCommand: spy(),
+  upgradeCommand: spy(),
+  listCommand: spy(),
 });
 
 Deno.test({
