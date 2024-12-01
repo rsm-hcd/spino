@@ -25,15 +25,16 @@ tasks or scripts that match the provided name.
 # Run a specific task
 > spino dev
 
-# Run all dev and test tasks
+# Run all dev and test tasks in parallel
 > spino dev test
 
-# Upgrade spino
-> spino upgrade
-
 # See help information
-> spino [command] --help
-Usage: spino [task1] [task2] ...
+> spino --help
+Usage: spino [task1] [task2] or spino [command]
+
+Commands:
+  upgrade:  Upgrade spino to the latest version
+  list:     List all available workspace tasks
 ```
 
 Or, you can run, without installing globally, by adding to the tasks section of

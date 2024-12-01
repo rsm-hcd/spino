@@ -6,11 +6,11 @@ export class PrefixLogger {
 
   readonly prefix: string;
 
-  constructor(packageName: string, taskName: string) {
+  constructor(packageName: string, taskName?: string) {
     const consoleColor = colors[randomColor()] as (str: string) => string;
-    this.prefix = consoleColor(
-      `${packageName}:${taskName}:`,
-    );
+    let prefix = `${packageName}:`;
+    prefix += taskName ? `${taskName}:` : "";
+    this.prefix = consoleColor(prefix);
   }
 
   log(message: string | Uint8Array) {
